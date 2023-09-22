@@ -2,7 +2,11 @@ package com.example.application.views;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
+import com.example.application.master.views.RabbitView;
+import com.example.application.master.views.UserView;
 import com.example.application.model.User;
+import com.example.application.tool.views.ExportView;
+import com.example.application.tool.views.ImportView;
 import com.example.application.util.VaadinUtil;
 import com.example.application.views.about.AboutView;
 import com.example.application.views.helloworld.HelloWorldView;
@@ -63,7 +67,6 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver, AfterN
 		viewTitle.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 
 		Button logout = new Button(null, VaadinIcon.SIGN_OUT.create());
-
 		logout.addClassName("header-sign-out");
 		logout.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 		logout.addClickListener(event -> {
@@ -79,7 +82,7 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver, AfterN
 	}
 
 	private void addDrawerContent() {
-		H1 appName = new H1("My App");
+		H1 appName = new H1("e-Leporidae");
 		appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 		Header header = new Header(appName);
 
@@ -93,7 +96,13 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver, AfterN
 
 		nav.addItem(new SideNavItem("Hello World", HelloWorldView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
 		nav.addItem(new SideNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
-
+		nav.addItem(new SideNavItem("Master Data"));
+		nav.addItem(new SideNavItem("User", UserView.class, LineAwesomeIcon.USER.create()));
+		nav.addItem(new SideNavItem("Rabbit", RabbitView.class, LineAwesomeIcon.ANDROID.create()));
+		
+		
+		nav.addItem(new SideNavItem("Import", ImportView.class, LineAwesomeIcon.FILE_IMPORT_SOLID.create()));
+		nav.addItem(new SideNavItem("Export", ExportView.class, LineAwesomeIcon.FILE_EXPORT_SOLID.create()));
 		return nav;
 	}
 
