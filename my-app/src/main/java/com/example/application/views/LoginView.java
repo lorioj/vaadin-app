@@ -33,19 +33,19 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver{
 		addClassName("login-page");
 		add(loginForm);
 		
+		
 		loginForm.setForgotPasswordButtonVisible(false);
 		loginForm.addLoginListener(event -> {
 			try {
 				loginForm.setError(false);
 				User u = systemService.authenticate(event.getUsername(), event.getPassword());
-				
 				VaadinUtil.setUser(u);
-				
 				UI.getCurrent().navigate(HelloWorldView.class);
 			} catch (RuntimeException e) {
 				loginForm.setError(true);
 			}
 		});
+
 		
 		setSizeFull();
 		setAlignItems(Alignment.CENTER);
