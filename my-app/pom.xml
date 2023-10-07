@@ -8,7 +8,7 @@
 	<artifactId>myapp</artifactId>
 	<name>myapp</name>
 	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<properties>
 		<java.version>17</java.version>
@@ -107,6 +107,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>my-app</finalName>
 		<defaultGoal>spring-boot:run</defaultGoal>
 		<plugins>
 			<plugin>
