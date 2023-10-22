@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component;
 import com.example.appservice.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long>{
-
+	User findByMobile(String mobile);
 }

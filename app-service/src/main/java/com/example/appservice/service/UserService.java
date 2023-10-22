@@ -10,14 +10,16 @@ import com.example.appservice.repository.UserRepository;
 
 @Service
 public class UserService {
-	
-	
+
 	@Autowired
 	private UserRepository userRepo;
-	
-	public List<User> findAll(){
+
+	public List<User> findAll() {
 		return userRepo.findAll();
 	}
-	
+
+	public User findByMobile(String mobile) {
+		return userRepo.findByMobile(mobile);
+	}
 
 }
