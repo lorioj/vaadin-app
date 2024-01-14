@@ -9,7 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.application.helper.TimeEntryHelper;
+import com.example.application.service.TimeEntryService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -46,14 +49,14 @@ public class TimeSheetView extends VerticalLayout {
 
 	private Button buttonRemove = new Button(VaadinIcon.MINUS.create());
 
-	private Deque<TimeComponent> lC = new ArrayDeque<>();
-
-	private List<TimeEntryHelper> listHelper = new ArrayList<>();
-
 	private int ps;
 
-	public TimeSheetView() {
+	private Deque<TimeEntryHelper> list = new ArrayDeque<>();
 
+	@Autowired
+	private TimeEntryService timeEntryService;
+
+	public TimeSheetView() {
 		List<Integer> months = new ArrayList<Integer>();
 		for (int i = 1; i <= 12; i++) {
 			months.add(i);
@@ -62,39 +65,32 @@ public class TimeSheetView extends VerticalLayout {
 		fieldMonth.setItems(months);
 		fieldMonth.setWidth("100px");
 		fieldMonth.setValue(LocalDate.now().getMonthValue());
-		fieldMonth.addValueChangeListener(event -> loadResults());
+		fieldMonth.addValueChangeListener(event -> {
+			list.clear();
+			monthLength = LocalDate.of(fieldYear.getValue(), event.getValue(), 1).lengthOfMonth();
+			List<TimeEntryHelper> timeEntries = timeEntryService.getRows(monthLength);
+			timeEntries.addAll(list);
+			loadResults(timeEntries);
+
+		});
 
 		fieldYear.setMin(2020);
 		fieldYear.setMax(LocalDate.now().getYear());
 		fieldYear.setValue(LocalDate.now().getYear());
-		fieldYear.addValueChangeListener(event -> loadResults());
+		fieldYear.addValueChangeListener(event -> {
+			list.clear();
+			monthLength = LocalDate.of(event.getValue(), fieldMonth.getValue(), 1).lengthOfMonth();
+			List<TimeEntryHelper> timeEntries = timeEntryService.getRows(monthLength);
+			timeEntries.addAll(list);
+			loadResults(timeEntries);
+		});
 
-		monthLength = LocalDate.of(fieldYear.getValue(), fieldMonth.getValue(), 1).lengthOfMonth();
-
-		for (int i = 0; i < 5; i++) {
-			TimeEntryHelper h = new TimeEntryHelper();
-			h.setName("john");
-			h.setTimeEntries(monthLength);
-
-			listHelper.add(h);
-		}
-
-		for (TimeEntryHelper th : listHelper) {
-			TimeComponent tc = new TimeComponent(th.getTimeEntries());
-			tc.d.setText(th.getName());
-
-			lC.addLast(tc);
-
-		}
-
-		ps = lC.size();
 		buttonRemove.addClickListener(e -> {
+			List<TimeEntryHelper> timeEntries = timeEntryService.getRows(monthLength);
+			list.removeLast();
+			timeEntries.addAll(list);
 
-			if (lC.size() <= ps) {
-				return;
-			}
-			lC.removeLast();
-			loadResults();
+			loadResults(timeEntries);
 
 		});
 
@@ -103,22 +99,28 @@ public class TimeSheetView extends VerticalLayout {
 			for (int i = 1; i <= monthLength; i++) {
 				newTimeEntries.put(i, null);
 			}
-			TimeComponent tc = new TimeComponent(newTimeEntries);
-			tc.d.setText("new");
-			lC.addLast(tc);
-			loadResults();
+			TimeEntryHelper th = new TimeEntryHelper();
+			th.setName("new");
+			th.setTimeEntries(monthLength, "new");
+			list.addLast(th);
+
+			List<TimeEntryHelper> timeEntries = timeEntryService.getRows(monthLength);
+			timeEntries.addAll(list);
+
+			loadResults(timeEntries);
 
 		});
 
-		loadResults();
 	}
 
 	@PostConstruct
 	public void init() {
 
+		monthLength = LocalDate.of(fieldYear.getValue(), fieldMonth.getValue(), 1).lengthOfMonth();
+		loadResults(timeEntryService.getRows(monthLength));
 	}
 
-	private void loadResults() {
+	private void loadResults(List<TimeEntryHelper> timeEntries) {
 		removeAll();
 		VerticalLayout l = new VerticalLayout();
 		l.add(layoutFilter);
@@ -129,7 +131,16 @@ public class TimeSheetView extends VerticalLayout {
 		layoutActions.add(buttonAdd, buttonRemove);
 
 		l.add(layoutActions);
-		l.add(createHeader());
+		l.add(createHeader(monthLength));
+
+		Deque<TimeComponent> lC = new ArrayDeque<>();
+		for (TimeEntryHelper th : timeEntries) {
+			TimeComponent tc = new TimeComponent(th.getTimeEntries());
+			tc.d.setText(th.getName());
+
+			lC.addLast(tc);
+
+		}
 
 		for (TimeComponent tc : lC) {
 			l.add(tc);
@@ -173,7 +184,7 @@ public class TimeSheetView extends VerticalLayout {
 		return d;
 	}
 
-	private HorizontalLayout createHeader() {
+	private HorizontalLayout createHeader(int day) {
 
 		HorizontalLayout l = new HorizontalLayout();
 		Div name = createDiv(DEFAULT_WIDTH, "Name");
@@ -181,7 +192,7 @@ public class TimeSheetView extends VerticalLayout {
 		Div detail = createDiv(TASK_WIDTH, "Detail");
 		l.add(name, task, detail);
 
-		for (int i = 1; i <= monthLength; i++) {
+		for (int i = 1; i <= day; i++) {
 			l.add(createDiv(DEFAULT_WIDTH, String.valueOf(i)));
 		}
 

@@ -20,13 +20,21 @@ public class TimeEntryHelper {
 		timeEntries = new HashMap<>();
 	}
 	
-	public void setTimeEntries(int day) {
-		for(int i = 1; i <= day; i++) {
-			timeEntries.put(i, new BigDecimal(Math.random() * 9).setScale(2, RoundingMode.HALF_UP));
+	public void setTimeEntries(int day, String newEntry) {
+		if(newEntry.equals("new")) {
+			for(int i = 1; i <= day; i++) {
+				timeEntries.put(i, null);
+			}
+		}else {
+			for(int i = 1; i <= day; i++) {
+				timeEntries.put(i, new BigDecimal(Math.random() * 9).setScale(2, RoundingMode.HALF_UP));
+			}
 		}
+		
 	}
+
 	
-//	set value if data from db
+//	db
 //	public void setTimeEntry(int k, BigDecimal v) {
 //		if(timeEntries.containsKey(k)) {
 //			timeEntries.put(k, v);
