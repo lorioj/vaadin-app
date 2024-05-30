@@ -17,9 +17,12 @@ public abstract class AbstractExcelExport {
 	}
 
 	protected void createCell(Sheet sheet, int rowIdx, int col, String value, CellStyle cellStyle) {
+		createCell(sheet, rowIdx, col, value, cellStyle, null);
+	}
+
+	protected void createCell(Sheet sheet, int rowIdx, int col, String value, CellStyle cellStyle, Map<String, Object> properties) {
 		Cell cell = createCell(sheet, rowIdx, col, cellStyle, null);
 		cell.setCellValue(value);
-
 	}
 
 	protected Row createRow(Sheet sheet, int rowIdx) {
