@@ -1,10 +1,12 @@
 package com.example.application.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.application.model.User;
 import com.example.application.repository.UserRepository;
@@ -32,5 +34,15 @@ public class UserService {
 	public void delete(User user) {
 		userRepo.delete(user);
 	}
+	
+	/**
+	 * Way to access web API
+	 */
+	public List<User> find(){
+		RestTemplate restTemplate = new RestTemplate();
+		User[] users = restTemplate.getForObject("http://localhost:8081/api/users", User[].class);
+		return Arrays.asList(users);
+	}
+	
 
 }

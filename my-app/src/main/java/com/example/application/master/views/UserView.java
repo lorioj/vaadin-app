@@ -35,7 +35,7 @@ import com.vaadin.flow.router.Route;
 public class UserView extends VerticalLayout implements AfterNavigationObserver {
 
 	private HorizontalLayout layoutFilter = new HorizontalLayout();
-	private ComboBox<User> fieldUser = new ComboBox<>("User");
+//	private ComboBox<User> fieldUser = new ComboBox<>("User");
 	private TextField fieldSearch = new TextField("User");
 	private Button buttonSearch = new Button("Search", VaadinIcon.SEARCH.create());
 
@@ -55,14 +55,14 @@ public class UserView extends VerticalLayout implements AfterNavigationObserver 
 		add(layoutActions);
 
 		layoutFilter.setAlignItems(Alignment.BASELINE);
-		layoutFilter.add(fieldUser, fieldSearch, buttonSearch);
+		layoutFilter.add(fieldSearch, buttonSearch);
 		
 		buttonSearch.addClickListener(event -> {
 			loadResult();
 		});
 
-		fieldUser.setClearButtonVisible(true);
-		fieldUser.setPlaceholder("Any");
+//		fieldUser.setClearButtonVisible(true);
+//		fieldUser.setPlaceholder("Any");
 //		fieldUser.addValueChangeListener(event -> loadResult());
 
 		fieldSearch.setWidth("300px");
@@ -76,7 +76,8 @@ public class UserView extends VerticalLayout implements AfterNavigationObserver 
 				.setHeader("Active").setWidth("60px");
 		grid.addColumn(o -> o.getName()).setHeader("Name").setFlexGrow(0).setWidth("200px").setResizable(true);
 		grid.addColumn(o -> o.getUsername()).setHeader("Username").setFlexGrow(0).setWidth("200px").setResizable(true);
-		grid.addColumn(o -> o.getPassword()).setHeader("Password").setFlexGrow(0).setWidth("200px").setResizable(true);
+//		grid.addColumn(o -> o.getPassword()).setHeader("Password").setFlexGrow(0).setWidth("200px").setResizable(true);
+		grid.addColumn(o -> o.getUserType()).setHeader("User Type").setFlexGrow(0).setWidth("200px").setResizable(true);
 		grid.addComponentColumn(o -> createActions(o)).setHeader("Actions").setFlexGrow(0).setAutoWidth(true).setResizable(true);
 
 		buttonNew.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
@@ -200,7 +201,7 @@ public class UserView extends VerticalLayout implements AfterNavigationObserver 
 
 	@Override
 	public void afterNavigation(AfterNavigationEvent event) {
-		fieldUser.setItems(userService.findAll());
+//		fieldUser.setItems(userService.findAll());
 
 		loadResult();
 

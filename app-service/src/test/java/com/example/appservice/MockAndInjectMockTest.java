@@ -25,7 +25,7 @@ public class MockAndInjectMockTest {
 	@Test
 	public void testWrite() {
 		when(pen.getPenColor()).thenReturn("red");
-		assertEquals("The color of pen: red", student.write());
+		assertEquals("The color of pen: red", student.write("d"));
 	}
 
 }

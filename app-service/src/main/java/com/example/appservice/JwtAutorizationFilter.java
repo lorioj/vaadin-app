@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.JWT;
@@ -37,6 +34,8 @@ public class JwtAutorizationFilter extends OncePerRequestFilter{
 	public JwtAutorizationFilter(UserService userService, String jwtSecret) {
 		log.warn("JwtAutorizationFilter constructor");
 		this.userService = userService;
+		
+		System.err.println(jwtSecret);
 		Algorithm algo = Algorithm.HMAC256(jwtSecret); // must match the algorithm used to generate the JWT
 		verifier = JWT.require(algo).withClaimPresence("mobileNo").build();
 	}
@@ -55,7 +54,7 @@ public class JwtAutorizationFilter extends OncePerRequestFilter{
 		try {
 			// decode the JWT
 			DecodedJWT jwt = verifier.verify(token.trim());
-	
+			
 			String mobileNo = jwt.getClaim("mobileNo").asString();
 			log.info("mobileNo: " + mobileNo);
 	

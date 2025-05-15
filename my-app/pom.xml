@@ -15,7 +15,7 @@
 		<vaadin.version>24.1.4</vaadin.version>
 		<selenium.version>4.10.0</selenium.version>
 	</properties>
-
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

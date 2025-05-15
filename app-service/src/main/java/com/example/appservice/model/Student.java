@@ -5,7 +5,11 @@ public class Student {
 
 	private Pen pen;
 
-	public String write() {
+	public String write(String s) {
+		if(s == null) {
+			return null;
+		}
+
 		return "The color of pen: " + pen.getPenColor();
 	}
 

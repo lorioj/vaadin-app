@@ -2,6 +2,7 @@ package com.example.application.views;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
+import com.example.application.master.views.SaleEncodeView;
 import com.example.application.master.views.UserView;
 import com.example.application.model.User;
 import com.example.application.tool.views.ExportView;
@@ -81,7 +82,7 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver, AfterN
 	}
 
 	private void addDrawerContent() {
-		H1 appName = new H1("e-Leporidae");
+		H1 appName = new H1("My App");
 		appName.addClassNames(LumoUtility.FontSize.LARGE, LumoUtility.Margin.NONE);
 		Header header = new Header(appName);
 
@@ -97,6 +98,7 @@ public class MainLayout extends AppLayout implements BeforeEnterObserver, AfterN
 		nav.addItem(new SideNavItem("About", AboutView.class, LineAwesomeIcon.FILE.create()));
 		nav.addItem(new SideNavItem("Master Data"));
 		nav.addItem(new SideNavItem("User", UserView.class, LineAwesomeIcon.USER.create()));
+		nav.addItem(new SideNavItem("Sale", SaleEncodeView.class, LineAwesomeIcon.USER.create()));
 		
 		nav.addItem(new SideNavItem("Import", ImportView.class, LineAwesomeIcon.FILE_IMPORT_SOLID.create()));
 		nav.addItem(new SideNavItem("Export", ExportView.class, LineAwesomeIcon.FILE_EXPORT_SOLID.create()));

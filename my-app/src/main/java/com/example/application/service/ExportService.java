@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class ExportService {
+public class ExportService extends AbstractExcelExport {
 
 	public InputStream createExportEntityExcelList(List<User> list) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();

@@ -30,6 +30,7 @@ public class User {
 	private String username;
 	private String password;
 	private boolean active;
+	private String userType;
 	
 	@Override
 	public String toString() {

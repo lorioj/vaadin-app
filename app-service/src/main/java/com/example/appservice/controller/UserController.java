@@ -1,6 +1,5 @@
 package com.example.appservice.controller;
 
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
-import com.example.appservice.model.AuthResponse;
 import com.example.appservice.model.User;
 import com.example.appservice.service.UserService;
 
@@ -49,13 +47,12 @@ public class UserController {
 	@PostMapping("/authenticate")
 	public String signIn(@RequestParam String mobileNo) {
 		System.err.println("authenticate postmapping");
-		AuthResponse res = AuthResponse.builder().jwtToken(generateJwt(mobileNo)).build();
-		System.err.println(res.getJwtToken());
-		return res.getJwtToken();
+//		AuthResponse res = AuthResponse.builder().jwtToken(generateJwt(mobileNo)).build();
+//		System.err.println(res.getJwtToken());
+//		return res.getJwtToken();
+		return "postmapping";
 	}
 	
-	
-
 	private String generateJwt(String mobileNo) {
 		if (algorithm == null) {
 			algorithm = Algorithm.HMAC256(jwtSecret);

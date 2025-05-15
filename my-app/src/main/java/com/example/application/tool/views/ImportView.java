@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -55,10 +56,10 @@ public class ImportView extends VerticalLayout implements Receiver {
 
 	private List<ImportEntity> list = new ArrayList<>();
 	private Grid<ImportEntity> grid = new Grid<ImportEntity>(ImportEntity.class);
-
+	
 	@Autowired
 	private UserService userService;
-
+	
 	public ImportView() {
 		add(upload);
 		add(new Label("Data Preview"));
@@ -79,9 +80,9 @@ public class ImportView extends VerticalLayout implements Receiver {
 		buttonImport.addClickListener(event -> {
 			runImport();
 		});
-
+	
 	}
-
+	
 	private void runImport() {
 		userService.findAll();
 		grid.setItems(list);
@@ -93,7 +94,6 @@ public class ImportView extends VerticalLayout implements Receiver {
 		try {
 
 			list.clear();
-
 			InputStream is = new ByteArrayInputStream(os.toByteArray());
 			Workbook workbook = new XSSFWorkbook(is);
 			Sheet sheet = workbook.getSheetAt(0);
@@ -104,12 +104,10 @@ public class ImportView extends VerticalLayout implements Receiver {
 					continue; // skip first row
 				}
 				Row row = sheet.getRow(rowNum);
-
 				if (row != null) {
-					Cell cellFirstName = row.getCell(1); // B
-
+					Cell cellFirstName = row.getCell(0); // B
 					String firstName = getStringValue(cellFirstName);
-
+					list.add(new ImportEntity(firstName, firstName));
 				} else {
 					// skip empty rows
 //					log.warn("Skipping empty row");
@@ -123,6 +121,7 @@ public class ImportView extends VerticalLayout implements Receiver {
 //			log.error(e.getMessage(), e);
 			VaadinUtil.showError(e.getMessage());
 		}
+		
 	}
 
 	private String getStringValue(Cell cell) {
